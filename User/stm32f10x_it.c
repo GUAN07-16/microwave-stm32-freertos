@@ -23,7 +23,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
-
+#include "key.h"
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
   */
@@ -136,38 +136,20 @@ void SysTick_Handler(void)
 {
 }
 
-extern volatile uint8_t stable_statue;
+
+extern KEY_CB KEY1;
+extern KEY_CB KEY2;
+extern void Key_Process(KEY_CB * KEY);
 
 void TIM3_IRQHandler(void)             
 {
-	//static :初始化只做一次
-	static uint8_t deb_cnt;            //消抖计数->20ms
-	static uint8_t last_statue = 1;    //按键对应io口初始未按下时都是高电平
-  uint8_t now_statue;
   if (TIM_GetITStatus(TIM3,TIM_IT_Update) == SET) //轮询 TIM_GetFlagStatus,检测是否产生中断
 	{
 		TIM_ClearFlag(TIM3, TIM_FLAG_Update);         //清除中断标志位
 	
-    now_statue = GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_12);
-		
-		if(now_statue == last_statue)
-		{ 
-			 deb_cnt ++;
-			 if(deb_cnt == 2 )
-			 {  
-				 
-				deb_cnt =0;
-				last_statue   = now_statue;
-				stable_statue = now_statue;	 
-			 
-			 }
-		 
-		}
-		else 
-		{
-			 deb_cnt = 0;
-			 last_statue = now_statue; 
-		}
+		Key_Process(&KEY1);
+		Key_Process(&KEY2);
+
 	}
 	
 }
