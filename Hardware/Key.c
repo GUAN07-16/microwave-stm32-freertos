@@ -1,10 +1,6 @@
 #include "Key.h"                  // Device header
 #include "main.h" 
 
-//volatile uint8_t stable_statue = 1;
-////static → 就是你说的“只作用于本文件”，别的 .c 文件看不见它，不会重名。
-////volatile → 中断里写、主循环里读，不加的话编译器可能认为主循环里没人改它，把判断优化掉。
-
 //PB12-SW1,PB1
 void Key_Init(void)
 {
