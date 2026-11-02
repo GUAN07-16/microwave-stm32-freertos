@@ -10,7 +10,7 @@
 
 #define KEY2_LONG_FLAG   0x00000008
 
-extern uint32_t KEYStaFlag;
+extern volatile uint32_t KEYStaFlag;
 
 
 
