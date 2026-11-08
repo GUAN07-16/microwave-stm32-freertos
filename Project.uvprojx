@@ -34,7 +34,7 @@
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
           <SFDFile>$$Device:STM32F103C8$SVD\STM32F103xx.svd</SFDFile>
-          <bCustSvd>0</bCustSvd>
+          <bCustSvd>1</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
           <IncludePath></IncludePath>
@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\Start;.\Library;.\User;.\System;.\Hardware</IncludePath>
+              <IncludePath>.\Start;.\Library;.\User;.\System;.\Hardware;.\System</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -654,14 +654,14 @@
           <GroupName>System</GroupName>
           <Files>
             <File>
-              <FileName>Timer.c</FileName>
+              <FileName>sys.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\System\Timer.c</FilePath>
+              <FilePath>.\System\sys.c</FilePath>
             </File>
             <File>
-              <FileName>Timer.h</FileName>
+              <FileName>sys.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\System\Timer.h</FilePath>
+              <FilePath>.\System\sys.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -707,6 +707,51 @@
               <FileName>SPI.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Hardware\SPI.h</FilePath>
+            </File>
+            <File>
+              <FileName>lcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\lcd.c</FilePath>
+            </File>
+            <File>
+              <FileName>lcd.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\lcd.h</FilePath>
+            </File>
+            <File>
+              <FileName>Timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\Timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>Delay.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\Delay.h</FilePath>
+            </File>
+            <File>
+              <FileName>Timer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\Timer.h</FilePath>
+            </File>
+            <File>
+              <FileName>Delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\Delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>FONT.H</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\FONT.H</FilePath>
+            </File>
+            <File>
+              <FileName>GUI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\GUI.c</FilePath>
+            </File>
+            <File>
+              <FileName>GUI.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\GUI.h</FilePath>
             </File>
           </Files>
         </Group>

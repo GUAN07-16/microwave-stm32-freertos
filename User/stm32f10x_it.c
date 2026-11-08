@@ -24,6 +24,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
 #include "key.h"
+#include "PWM.h"
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
   */
@@ -140,7 +141,8 @@ void SysTick_Handler(void)
 extern KEY_CB KEY1;
 extern KEY_CB KEY2;
 extern void Key_Process(KEY_CB * KEY);
-
+extern volatile uint8_t time;    //extern不需要赋值
+extern volatile uint8_t complete;
 void TIM3_IRQHandler(void)             
 {
   if (TIM_GetITStatus(TIM3,TIM_IT_Update) == SET) //轮询 TIM_GetFlagStatus,检测是否产生中断
@@ -150,6 +152,31 @@ void TIM3_IRQHandler(void)
 		Key_Process(&KEY1);
 		Key_Process(&KEY2);
 
+	}
+	
+}
+
+void TIM4_IRQHandler(void)             
+{
+  if (TIM_GetITStatus(TIM4,TIM_IT_Update) == SET) //轮询 TIM_GetFlagStatus,检测是否产生中断
+	{
+		TIM_ClearFlag(TIM4, TIM_FLAG_Update);         //清除中断标志位
+	  
+		 if(time>0)
+			{
+				time --;		
+			
+			}	
+      if(time==0)
+			{
+				complete = 1;
+		    Turntable_Stop();
+				Heater_Set(0);	
+				TIM_ITConfig(TIM4, TIM_IT_Update, DISABLE);   
+				TIM_Cmd(TIM4, DISABLE);
+			}		
+      
+				
 	}
 	
 }

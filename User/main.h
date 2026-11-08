@@ -17,7 +17,7 @@ extern volatile uint32_t KEYStaFlag;
 
 
 
-#endif  __MAIN_H
+#endif  
 
 
 

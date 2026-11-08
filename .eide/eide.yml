@@ -68,36 +68,28 @@ virtualFolder:
       folders: []
     - name: System
       files:
-        - path: System/Delay.c
-        - path: System/Delay.h
-        - path: System/Timer.c
-        - path: System/Timer.h
+        - path: System/sys.c
+        - path: System/sys.h
       folders: []
     - name: Hardware
       files:
+        - path: Hardware/Key.h
+        - path: Hardware/Key.c
         - path: Hardware/LED.c
         - path: Hardware/LED.h
-        - path: Hardware/OLED_Data.c
-        - path: Hardware/OLED_Data.h
-        - path: Hardware/OLED.c
-        - path: Hardware/OLED.h
-        - path: Hardware/Key.c
-        - path: Hardware/Key.h
-        - path: Hardware/MPU6050.c
-        - path: Hardware/MPU6050.h
-        - path: Hardware/MPU6050_Reg.h
-        - path: Hardware/MyI2C.c
-        - path: Hardware/MyI2C.h
-        - path: Hardware/Motor.c
-        - path: Hardware/Motor.h
         - path: Hardware/PWM.c
         - path: Hardware/PWM.h
-        - path: Hardware/Encoder.c
-        - path: Hardware/Encoder.h
-        - path: Hardware/Serial.c
-        - path: Hardware/Serial.h
-        - path: Hardware/BlueSerial.c
-        - path: Hardware/BlueSerial.h
+        - path: Hardware/SPI.c
+        - path: Hardware/SPI.h
+        - path: Hardware/lcd.c
+        - path: Hardware/lcd.h
+        - path: Hardware/Timer.c
+        - path: Hardware/Delay.h
+        - path: Hardware/Timer.h
+        - path: Hardware/Delay.c
+        - path: Hardware/FONT.H
+        - path: Hardware/GUI.c
+        - path: Hardware/GUI.h
       folders: []
     - name: User
       files:
@@ -105,6 +97,7 @@ virtualFolder:
         - path: User/stm32f10x_conf.h
         - path: User/stm32f10x_it.c
         - path: User/stm32f10x_it.h
+        - path: User/main.h
       folders: []
 dependenceList: []
 outDir: build
