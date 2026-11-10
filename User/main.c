@@ -7,8 +7,12 @@
 #include "SPI.h"
 #include "gui.h"
 #include "lcd.h"
+#include "dht11.h"
+
 KEY_CB KEY1={GPIO_Pin_12,KEY1_SHORT_FLAG,KEY1_LONG_FLAG,0,0,0,1,1};
 KEY_CB KEY2={GPIO_Pin_1,KEY2_SHORT_FLAG,KEY2_LONG_FLAG,0,0,0,1,1};
+DHT_CB DHT11 ={ GPIOC ,GPIO_Pin_14}; //GPIOC就是指针
+
 
 volatile uint32_t KEYStaFlag = 0;    //位掩码,一个变量里同时存放多个独立的状态标志,值判断对应位
 uint8_t Door_state =0;
@@ -17,6 +21,10 @@ volatile uint8_t time =0;
 volatile uint8_t heating =0;
 volatile uint8_t complete =0;            
 static uint8_t time_shown = 0xFF;    /* 0xFF:255开机第一次比较必不相等”(强制首刷) */
+uint8_t temp = 0;
+uint8_t humidity = 0;
+uint8_t tick = 0;
+
 
 int main()
 { 
@@ -27,20 +35,53 @@ int main()
 	TIM1_PWM_Init();
 	TIM2_PWM_Init();
 	LCD_Init();
+	
+	Show_Str(0, 60, BLUE, WHITE, "Microwave V1.1", 16, 0);
+	Delay_ms(2000);
 	LCD_Clear(WHITE);    //全屏填充白色，清屏函数
-  
+	
+  Door_Open(); 
+	Door_state = 1;
+	LED_ON();
+	ui_door("OPEN");            /* Door:OPEN */
 	ui_power("MID");            /* Power: MID */
 	ui_time(0);                 /* Time: 0 */
-	ui_door("CLOSED");          /* Door:CLOSED */
+	
+	
+	
+	Delay_ms(1500);
+	if(DHT_Read_Data(&temp,&humidity,GPIOC,GPIO_Pin_14,&DHT11)==1)
+	{
+			ui_DHT11_temp(temp);
+			ui_DHT11_humidity(humidity);		
+	}
+	
+	
 	
 	while(1)
 	{	
-
-		if(time_shown != time)               /* 数据和屏上不一致才刷,一致跳过 */
+		
+		
+		if(time_shown != time)    /* 数据和屏上不一致才刷,一致跳过 */
 		{
+			  
 				time_shown = time;
 				ui_time(time);
+			  tick++;
+			
+			  if(tick==2 )           //2s刷新一次温度和
+				{
+					tick =0;   //无条件消费,不管下面成败,节流计时重新开始 
+					if(DHT_Read_Data(&temp,&humidity,GPIOC,GPIO_Pin_14,&DHT11)==1)
+					{
+						ui_DHT11_temp(temp);
+						ui_DHT11_humidity(humidity);		
+					}
+				}	
 		}
+		
+		
+		
 		
 		if(complete == 1)            //加热完成
 		{
@@ -53,6 +94,9 @@ int main()
 			Heater_Set(0);	
 			ui_door("OPEN"); 
 			ui_hint("Heating complete");
+			//加热完成恢复默认挡位
+			power_cnt = 2; 
+			ui_power("MID");
 		}
 		
 		if(complete ==0 && heating ==1 && Door_state == 1)   //加热中开门
@@ -68,6 +112,25 @@ int main()
 		}
 		
 		
+		if(heating==1 && temp >= 30)                         //加热中温度过高
+		{
+			heating = 0;
+			LED_ON();  
+			Door_Open(); 
+			Door_state=1;
+			Turntable_Stop();	
+			Heater_Set(0);
+			ui_hint("Over heat!");
+			TIM_ITConfig(TIM4, TIM_IT_Update, DISABLE);   
+		  TIM_Cmd(TIM4, DISABLE);		
+		}
+		
+		
+		
+		
+		
+		
+		
 		//开门灯亮,关门灯灭
 		
 		if(KEYStaFlag & KEY1_SHORT_FLAG)                          //按键1短按切换门状态
@@ -81,8 +144,6 @@ int main()
 				LED_ON();
 				ui_door("OPEN");   
 			
-		
-				
 			}
 			else if (Door_state ==1)                                //开门切换为关门(灯灭)
 			{
@@ -96,15 +157,31 @@ int main()
 			
 		}
 
-		if((KEYStaFlag & KEY1_LONG_FLAG) && (Door_state ==0) &&(time>0))          //按键1长按启动加热,使能中断,中断服务函数只用于计时
+		//改无条件消费标志位,防卡死
+		if(KEYStaFlag & KEY1_LONG_FLAG)          //按键1长按启动加热,使能中断,中断服务函数只用于计时
 		{
-			ui_hint("heating");
 			KEYStaFlag = 0;
-      heating	=1;		
-			Turntable_Start();	                                                    //进中断有1s延迟所以先进行启动
-			Heater_Set(power_cnt==1 ? HEATER_LOW : power_cnt==2 ? HEATER_MED : HEATER_HIGH);
-      TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE);   
-			TIM_Cmd(TIM4, ENABLE);   
+			if(time==0)
+			{
+			 ui_hint("increase time");
+			}
+			else               //time>0
+			{
+					if(Door_state==0)           //关门
+					{					
+						ui_hint("heating");
+						heating	=1;		
+						Turntable_Start();	                                                    //进中断有1s延迟所以先进行启动
+						Heater_Set(power_cnt==1 ? HEATER_LOW : power_cnt==2 ? HEATER_MED : HEATER_HIGH);
+						TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE);   
+						TIM_Cmd(TIM4, ENABLE);
+					}
+					else if(Door_state!=0)       //开门
+					{
+						ui_hint("wait close");	
+					}				
+			}
+			
 			
 		}
 		
@@ -112,7 +189,7 @@ int main()
 		if(KEYStaFlag & KEY2_SHORT_FLAG)       //按键2短按增加加入时长
 		{
 			KEYStaFlag = 0; 
-			time+=10;
+			time+=20;
 			if(time>200)
 			{
 				time = 0;
@@ -126,8 +203,7 @@ int main()
 		  ui_power(power_cnt==1 ? "LOW" : power_cnt==2 ? "MID" : "HIGH");
 		}
 
-		
-	
+
 
 	}
 	
