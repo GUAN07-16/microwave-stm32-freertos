@@ -8,6 +8,9 @@ void ui_time(uint16_t s);
 void ui_hint(const char *s);
 void ui_power(const char *name);
 void ui_door(const char *s);
+void ui_DHT11_temp(uint8_t s);
+void ui_DHT11_humidity(uint8_t s);   
+	
 
 void GUI_DrawPoint(u16 x,u16 y,u16 color);
 void LCD_Fill(u16 sx,u16 sy,u16 ex,u16 ey,u16 color);

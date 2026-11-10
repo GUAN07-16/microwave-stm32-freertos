@@ -73,6 +73,26 @@ void ui_hint(const char *s)                           /* ¶¥²¿ÁÙÊ±ÌáÊ¾£¬×î¶à16¸öÓ
     Show_Str(0, 80, BLUE, WHITE, (u8 *)s, 16, 0);
 }
 
+// ÎÂ¶È£¬Ê¹ÓÃLCD_ShowNum£¬ºÍui_time±£³Ö·ç¸ñÍ³Ò»,Show_StrÐèÒª´«Èë×Ö·û´®
+void ui_DHT11_temp(uint8_t s)                              /* ÏÔÊ¾ÎÂ¶È */
+{
+Show_Str(0,100, BLACK, WHITE, "Temp:", 16, 0);
+LCD_Fill(40,100, 127, 116, WHITE);
+LCD_ShowNum(40,100, s, 2, 16);    //DHT11ÎÂ¶È0~99£¬2Î»×ã¹»
+}
+
+// Êª¶È
+void ui_DHT11_humidity(uint8_t s)                           /* ÏÔÊ¾Êª¶È */
+{
+Show_Str(0,120, BLACK, WHITE, "Humidity:", 16, 0);
+LCD_Fill(72,120, 127, 136, WHITE);
+LCD_ShowNum(72,120, s, 2, 16);
+}
+
+
+
+
+
 
 /*******************************************************************
  * @name       :void GUI_DrawPoint(u16 x,u16 y,u16 color)
