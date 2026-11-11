@@ -763,6 +763,16 @@
               <FileType>5</FileType>
               <FilePath>.\Hardware\dht11.h</FilePath>
             </File>
+            <File>
+              <FileName>beep.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\beep.c</FilePath>
+            </File>
+            <File>
+              <FileName>beep.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\beep.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

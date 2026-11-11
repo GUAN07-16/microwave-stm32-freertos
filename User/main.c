@@ -5,9 +5,10 @@
 #include "Timer.h"
 #include "PWM.h"  
 #include "SPI.h"
-#include "gui.h"
+#include "GUI.h"
 #include "lcd.h"
 #include "dht11.h"
+#include "beep.h"
 
 KEY_CB KEY1={GPIO_Pin_12,KEY1_SHORT_FLAG,KEY1_LONG_FLAG,0,0,0,1,1};
 KEY_CB KEY2={GPIO_Pin_1,KEY2_SHORT_FLAG,KEY2_LONG_FLAG,0,0,0,1,1};
@@ -35,6 +36,7 @@ int main()
 	TIM1_PWM_Init();
 	TIM2_PWM_Init();
 	LCD_Init();
+	beep_Init();     //beep()里面两个Delay_ms(600),调用放后面不影响前面加热启动
 	
 	Show_Str(0, 60, BLUE, WHITE, "Microwave V1.1", 16, 0);
 	Delay_ms(2000);
@@ -97,6 +99,8 @@ int main()
 			//加热完成恢复默认挡位
 			power_cnt = 2; 
 			ui_power("MID");
+		  beep(3);
+			
 		}
 		
 		if(complete ==0 && heating ==1 && Door_state == 1)   //加热中开门
@@ -123,6 +127,7 @@ int main()
 			ui_hint("Over heat!");
 			TIM_ITConfig(TIM4, TIM_IT_Update, DISABLE);   
 		  TIM_Cmd(TIM4, DISABLE);		
+			beep(4);
 		}
 		
 		
@@ -161,11 +166,12 @@ int main()
 		if(KEYStaFlag & KEY1_LONG_FLAG)          //按键1长按启动加热,使能中断,中断服务函数只用于计时
 		{
 			KEYStaFlag = 0;
+		
 			if(time==0)
 			{
 			 ui_hint("increase time");
 			}
-			else               //time>0
+			else    //time>0
 			{
 					if(Door_state==0)           //关门
 					{					
@@ -175,10 +181,12 @@ int main()
 						Heater_Set(power_cnt==1 ? HEATER_LOW : power_cnt==2 ? HEATER_MED : HEATER_HIGH);
 						TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE);   
 						TIM_Cmd(TIM4, ENABLE);
+						beep(2);               //beep()里面两个Delay_ms(600),调用放后面不影响前面加热启动
 					}
 					else if(Door_state!=0)       //开门
 					{
-						ui_hint("wait close");	
+						ui_hint("wait close");
+            beep(1);					
 					}				
 			}
 			

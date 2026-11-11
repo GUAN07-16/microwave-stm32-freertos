@@ -90,6 +90,10 @@ virtualFolder:
         - path: Hardware/FONT.H
         - path: Hardware/GUI.c
         - path: Hardware/GUI.h
+        - path: Hardware/beep.c
+        - path: Hardware/beep.h
+        - path: Hardware/dht11.c
+        - path: Hardware/dht11.h
       folders: []
     - name: User
       files:

@@ -3,11 +3,9 @@
 *gui.c文件
 *移植自网上开源代码
 */		
-#include "lcd.h"
-#include "string.h"
+
 #include "font.h" 
-#include "sys.h"
-#include "gui.h"
+#include "GUI.h"
 
 
 //LCD_Fill(sx,sy,ex,ey,color)

@@ -4,6 +4,12 @@
 */			
 #ifndef __GUI_H__
 #define __GUI_H__
+
+#include "lcd.h"
+#include "string.h"
+#include "sys.h"
+
+
 void ui_time(uint16_t s);
 void ui_hint(const char *s);
 void ui_power(const char *name);

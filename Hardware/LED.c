@@ -1,6 +1,6 @@
 #include "LED.h"                  // Device header
 
-void LED_Init(void)
+void LED_Init(void)     //板载LED就是二极管原理 ->有电位差才导通,即输出低才导通
 {  
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);//LED接PC13
 	
