@@ -16,7 +16,7 @@
 #define BIT_ADDR(addr, bitnum)   MEM_ADDR(BITBAND(addr, bitnum)) 
 //IO¿ÚµØÖ·Ó³Éä
 #define GPIOA_ODR_Addr    (GPIOA_BASE+12) //0x4001080C 
-#define GPIOB_ODR_Addr    (GPIOB_BASE+12) //0x40010C0C 
+#define GPIOB_ODR_Addr    (GPIOB_BASE+12) //0x40010C0C `
 #define GPIOC_ODR_Addr    (GPIOC_BASE+12) //0x4001100C 
 #define GPIOD_ODR_Addr    (GPIOD_BASE+12) //0x4001140C 
 #define GPIOE_ODR_Addr    (GPIOE_BASE+12) //0x4001180C 

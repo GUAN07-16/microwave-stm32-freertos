@@ -68,8 +68,8 @@ virtualFolder:
       folders: []
     - name: System
       files:
-        - path: System/sys.c
-        - path: System/sys.h
+        - path: System/sys/sys.c
+        - path: System/sys/sys.h
       folders: []
     - name: Hardware
       files:
@@ -90,10 +90,10 @@ virtualFolder:
         - path: Hardware/FONT.H
         - path: Hardware/GUI.c
         - path: Hardware/GUI.h
-        - path: Hardware/beep.c
-        - path: Hardware/beep.h
         - path: Hardware/dht11.c
         - path: Hardware/dht11.h
+        - path: Hardware/beep.c
+        - path: Hardware/beep.h
       folders: []
     - name: User
       files:
@@ -102,6 +102,22 @@ virtualFolder:
         - path: User/stm32f10x_it.c
         - path: User/stm32f10x_it.h
         - path: User/main.h
+      folders: []
+    - name: FreeRTOS_core
+      files:
+        - path: FreeRTOS/croutine.c
+        - path: FreeRTOS/event_groups.c
+        - path: FreeRTOS/list.c
+        - path: FreeRTOS/queue.c
+        - path: FreeRTOS/tasks.c
+        - path: FreeRTOS/timers.c
+      folders: []
+    - name: FreeRTOS_port
+      files:
+        - path: FreeRTOS/portable/MemMang/heap_4.c
+        - path: FreeRTOS/portable/RVDS/ARM_CM3/port.c
+        - path: FreeRTOS/include/FreeRTOS.h
+        - path: FreeRTOS/include/FreeRTOSConfig.h
       folders: []
 dependenceList: []
 outDir: build
@@ -119,6 +135,11 @@ targets:
         - User
         - System
         - Hardware
+        - FreeRTOS
+        - FreeRTOS/include
+        - FreeRTOS/portable
+        - System/sys
+        - FreeRTOS/portable/RVDS/ARM_CM3
         - .cmsis/include
         - RTE/_Target 1
       libList: []

@@ -18,12 +18,12 @@ void Timer_Init(void)
 	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseInitStructure);                //72M,计算得一次更新中断触发时间为10ms
 	
 	
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+	//NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	NVIC_InitTypeDef NVIC_InitStructure;
 	NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;      
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 5;           //定时器抢占优先级
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
 	NVIC_Init(&NVIC_InitStructure);
 	
 	TIM_ClearFlag(TIM3, TIM_FLAG_Update);
@@ -50,12 +50,12 @@ void TIM4_Init(void)                    //1s进入一次中断用于加热时间--
 	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseInitStructure);                //72M,计算得一次更新中断触发时间为10ms
 	
 	
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+	//NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	NVIC_InitTypeDef NVIC_InitStructure;
 	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;      
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 5;           //定时器抢占优先级
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
 	NVIC_Init(&NVIC_InitStructure);
 	
 	TIM_ClearFlag(TIM4, TIM_FLAG_Update);
