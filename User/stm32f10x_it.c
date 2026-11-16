@@ -145,7 +145,7 @@ extern KEY_CB KEY2;
 extern void Key_Process(KEY_CB * KEY);
 extern volatile uint8_t time;    //extern不需要赋值
 extern SemaphoreHandle_t heating_sem; 
-
+extern SemaphoreHandle_t iap_sem;
 void TIM3_IRQHandler(void)             
 {
   if (TIM_GetITStatus(TIM3,TIM_IT_Update) == SET) //轮询 TIM_GetFlagStatus,检测是否产生中断
@@ -177,6 +177,24 @@ void TIM4_IRQHandler(void)
 	}
 	
 }
+
+void DMA1_Channel5_IRQHandler(void)          //DMA一次搬运完成则置位TC
+{
+	// 定义局部变量，初始是pdFALSE
+	BaseType_t xWoken = pdFALSE;
+  if(DMA_GetITStatus(DMA1_IT_TC5)==SET)
+	{
+		DMA_ClearFlag(DMA1_FLAG_TC5);
+		
+		xSemaphoreGiveFromISR(iap_sem, &xWoken);        //释放信号量
+	 //如果本次释放信号量唤醒了优先级更高的任务，这行代码就会在中断结束之后，立刻切去跑这个高优先级任务；没唤醒就什么都不做
+		portYIELD_FROM_ISR (xWoken);
+		
+	}
+}
+
+
+
 
 
 /******************************************************************************/

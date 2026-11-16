@@ -12,7 +12,8 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "semphr.h"
-
+#include "flash.h"  
+#include "usart.h"
 KEY_CB KEY1={GPIO_Pin_12,KEY1_SHORT_FLAG,KEY1_LONG_FLAG,0,0,0,1,1};
 KEY_CB KEY2={GPIO_Pin_1,KEY2_SHORT_FLAG,KEY2_LONG_FLAG,0,0,0,1,1};
 DHT_CB DHT11 ={ GPIOC ,GPIO_Pin_14};  //GPIOC就是指针
@@ -26,11 +27,14 @@ volatile uint8_t heating =0;
 static uint8_t time_shown = 0xFF;    /* 0xFF:255开机第一次比较必不相等”(强制首刷) */
 uint8_t temp = 0;
 uint8_t humidity = 0;
+extern uint8_t U1_RxBuff[4096];
 
 TaskHandle_t keyTask;
 TaskHandle_t cookingTask;
 TaskHandle_t dhtTask;
+TaskHandle_t iapTask;
 SemaphoreHandle_t heating_sem;   //信号量句柄
+SemaphoreHandle_t iap_sem;   //信号量句柄
 
 void Task_KEY(void *params)
 {
@@ -200,6 +204,31 @@ void dht_Task(void *params)
 	
 }
 
+void iap_Task(void * prams)                        //一共64k,64页,B区36k,A区28k
+{
+	
+	while(1)
+	{
+		  xSemaphoreTake(iap_sem, portMAX_DELAY); 
+			u1_printf("DMA搬运完毕,开始写入片内flash");
+		 	if(((*(volatile uint32_t *)(U1_RxBuff+4))&0xFF000000)==0x08000000)                  //判断更新固件是否为0X08XXXXXX.
+			{
+					STMF103_32_Erase(36, 28);                           //第36页开始擦28页
+				  STMF103_32_Write(STM32_A_SADDR,(uint32_t *)U1_RxBuff,APP_BIN_SIZE);
+				
+				if( ((*(volatile uint32_t *)(STM32_A_SADDR+4)) & 0xFF000000) == STM32_FLASH_SADDR ) //读取刚写好的片内Flash，再次检查复位向量
+					{
+							LOAD_A(STM32_A_SADDR);              //跳转A区 
+					}
+				
+			}
+		  /*所有没跳跳转A区的出口统一在此:清缓冲+重开DMA */
+			memset(U1_RxBuff, 0, sizeof(U1_RxBuff));
+			DMA_ClearFlag(DMA1_FLAG_TC5);
+			DMA_Cmd(DMA1_Channel5, ENABLE);
+		
+	}
+}
 
 
 int main()
@@ -216,6 +245,8 @@ int main()
 	TIM2_PWM_Init();
 	LCD_Init();
 	beep_Init();     //beep()里面两个Delay_ms(600),调用放后面不影响前面加热启动
+	Usart1_DMA_Init(115200,APP_BIN_SIZE);
+	
 	
 	Show_Str(0, 60, BLUE, WHITE, "Microwave V1.1", 16, 0);
 	Delay_ms(2000);
@@ -250,8 +281,9 @@ int main()
 	
 	xTaskCreate(&cooking_Task,"cookingTask",128,NULL,5,&cookingTask);
 	xTaskCreate(&dht_Task,"dhtTask",128,NULL,2,&dhtTask);
-	
+	xTaskCreate(&iap_Task,"iapTask",256,NULL,6,&iapTask);
 	heating_sem = xSemaphoreCreateBinary();          //创建信号量
+  iap_sem = xSemaphoreCreateBinary();              //创建信号量
 	
 	vTaskStartScheduler ();         //启动调度
 	

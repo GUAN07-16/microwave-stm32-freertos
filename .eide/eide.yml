@@ -94,6 +94,10 @@ virtualFolder:
         - path: Hardware/dht11.h
         - path: Hardware/beep.c
         - path: Hardware/beep.h
+        - path: Hardware/usart.c
+        - path: Hardware/usart.h
+        - path: Hardware/flash.c
+        - path: Hardware/flash.h
       folders: []
     - name: User
       files:
