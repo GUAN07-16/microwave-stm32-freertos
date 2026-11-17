@@ -218,6 +218,7 @@ void iap_Task(void * prams)                        //一共64k,64页,B区36k,A区28k
 				
 				if( ((*(volatile uint32_t *)(STM32_A_SADDR+4)) & 0xFF000000) == STM32_FLASH_SADDR ) //读取刚写好的片内Flash，再次检查复位向量
 					{
+   						u1_printf("准备跳转A区");
 							LOAD_A(STM32_A_SADDR);              //跳转A区 
 					}
 				
@@ -249,6 +250,7 @@ int main()
 	
 	
 	Show_Str(0, 60, BLUE, WHITE, "Microwave V1.1", 16, 0);
+	u1_printf("Welcome!");
 	Delay_ms(2000);
 	LCD_Clear(WHITE);    //全屏填充白色，清屏函数
 	
@@ -258,7 +260,7 @@ int main()
 	ui_door("OPEN");            /* Door:OPEN */
 	ui_power("MID");            /* Power: MID */
 	ui_time(0);                 /* Time: 0 */
-	
+
 	
 	Delay_ms(1500);
 	if(DHT_Read_Data(&temp,&humidity,GPIOC,GPIO_Pin_14,&DHT11)==1)

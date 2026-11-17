@@ -12,7 +12,7 @@ void Usart1_DMA_Init(uint32_t bandrate,uint16_t Num)
     //USART1挂载在 APB2 总线,APB2 最高 72MHz
     //DMA1挂在AHB总线
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);    
-   RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1,ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1,ENABLE);
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
     
     /*串口初始化 PA9 ,PA10*/
@@ -24,7 +24,7 @@ void Usart1_DMA_Init(uint32_t bandrate,uint16_t Num)
     GPIO_Init(GPIOA,&GPIO_InitStructure); /*调用GPIO_InitStructure*/
     
 
-    /*PA10  - USART1_TX  Mode: 浮空输入 */
+    /*PA10  - USART1_RX  Mode: 浮空输入 */
     GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_10 ;
     GPIO_InitStructure.GPIO_Mode     = GPIO_Mode_IN_FLOATING;
     GPIO_Init(GPIOA,&GPIO_InitStructure); /*调用GPIO_InitStructure*/

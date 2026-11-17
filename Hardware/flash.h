@@ -15,7 +15,7 @@
 
 
 
-#define APP_BIN_SIZE   3466
+#define APP_BIN_SIZE     1088
 
 
 
@@ -25,7 +25,9 @@ void STMF103_32_Write(uint32_t Start_addr, uint32_t * wdata,uint32_t wnum);
 
 typedef void (*load_a)(void);       //函数指针,指向函数,调用指针=调用函数,改变PC
 
-__asm void MSR_SP(uint32_t addr);
+//__asm void MSR_SP(uint32_t addr);
+__asm void MSR_SP(uint32_t sp, uint32_t entry);   //两个参数:C调汇编,第1参数进r0,第2参数进r1
+
 
 void LOAD_A(uint32_t addr);
 #endif
