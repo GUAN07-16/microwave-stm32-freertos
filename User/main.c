@@ -132,7 +132,7 @@ void Task_KEY(void *params)
 		  ui_power(power_cnt==1 ? "LOW" : power_cnt==2 ? "MID" : "HIGH");
 		}
    
-		 vTaskDelay(10);            //进入阻塞态
+		 vTaskDelay(100);            //进入阻塞态,100ms增长任务窗口时间
 		
 	}
 	

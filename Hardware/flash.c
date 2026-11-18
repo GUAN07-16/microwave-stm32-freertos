@@ -132,6 +132,7 @@ void LOAD_A(uint32_t addr)
 		TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);//关它的中断申请线
 		TIM_Cmd(TIM4, DISABLE);                    //TIM4顺手(平时已DISABLE,防加热中升级)
 		TIM_ITConfig(TIM4, TIM_IT_Update, DISABLE);
+		
 		/*传入addr只是数字,强转指针再解引用=取出向量表里存的原始数值(你原来的理解,原样保留)
 		  原版"指针变量load_A();更新PC跳转"退役:因为新MSR_SP是换栈+跳转一口气,中间没有
 		  落地回C的机会(一旦回C,代码就在用刚换掉的陌生栈,局部变量全悬空)*/

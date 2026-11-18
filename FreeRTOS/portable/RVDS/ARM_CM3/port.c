@@ -74,7 +74,8 @@
 /* Scheduler includes. */
 #include "FreeRTOS.h"
 #include "task.h"
-
+extern void PRE_SLEEP_PROCESSING(u32 ulExpectedIdleTime);
+extern void POST_SLEEP_PROCESSING(u32 ulExpectedIdleTime);
 #ifndef configKERNEL_INTERRUPT_PRIORITY
 	#define configKERNEL_INTERRUPT_PRIORITY 255
 #endif

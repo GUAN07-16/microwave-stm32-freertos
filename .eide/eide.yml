@@ -98,6 +98,8 @@ virtualFolder:
         - path: Hardware/usart.h
         - path: Hardware/flash.c
         - path: Hardware/flash.h
+        - path: Hardware/low_power.c
+        - path: Hardware/low_power.h
       folders: []
     - name: User
       files:

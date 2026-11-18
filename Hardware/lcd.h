@@ -5,7 +5,7 @@
 */
 #ifndef __LCD_H
 #define __LCD_H		
-#include "sys.h"	 
+#include "sys.h"
 #include "stdlib.h"
 #include "stdlib.h"
 #include "spi.h"
