@@ -11,4 +11,6 @@ DebugConfig/
 *.bak
 *.uvguix.*
 JLinkLog.txt
-build/
+build/.vscode/
+*.scvd
+*.code-workspace
