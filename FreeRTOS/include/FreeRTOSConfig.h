@@ -98,7 +98,7 @@
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION	1                       //1启用特殊方法来选择下一个要运行的任务
                                                                         //一般是硬件计算前导零指令，如果所使用的
                                                                         //MCU没有这些硬件指令的话此宏应该设置为0！
-#define configUSE_TICKLESS_IDLE				1                       //1启用低功耗tickless模式，0关闭--不甘心的咸鱼注
+#define configUSE_TICKLESS_IDLE				1                       //1启用低功耗tickless模式，0关闭
 #define configUSE_QUEUE_SETS					1                       //为1时启用队列
 #define configCPU_CLOCK_HZ						(SystemCoreClock)       //CPU频率
 #define configTICK_RATE_HZ						(1000)                  //时钟节拍频率，这里设置为1000，周期就是1ms
@@ -125,7 +125,7 @@
 /*                                FreeRTOS与内存申请有关配置选项                                                */
 /***************************************************************************************************************/
 #define configSUPPORT_DYNAMIC_ALLOCATION        1                       //支持动态内存申请
-#define configTOTAL_HEAP_SIZE					((size_t)(10*1024))     //系统所有总的堆大小/*若分配的过大会导致内存不足此处分配为10K，请根据任务需要自行划分--不甘心的咸鱼注*/
+#define configTOTAL_HEAP_SIZE					((size_t)(10*1024))     //系统所有总的堆大小/*若分配的过大会导致内存不足此处分配为10K，请根据任务需要自行划分*/
 
 /***************************************************************************************************************/
 /*                                FreeRTOS与钩子函数有关的配置选项                                              */
@@ -136,7 +136,7 @@
 /***************************************************************************************************************/
 /*                                FreeRTOS与运行时间和任务状态收集有关的配置选项                                 */
 /***************************************************************************************************************/
-#define configGENERATE_RUN_TIME_STATS	        0                       //为1时启用运行时间统计功能，/*该项目没用到，因此关闭--不甘心的咸鱼注*/
+#define configGENERATE_RUN_TIME_STATS	        0                       //为1时启用运行时间统计功能，/*该项目没用到，因此关闭*/
 #define configUSE_TRACE_FACILITY				1                       //为1启用可视化跟踪调试
 #define configUSE_STATS_FORMATTING_FUNCTIONS	1                       //与宏configUSE_TRACE_FACILITY同时为1时会编译下面3个函数
                                                                         //prvWriteNameToBuffer(),vTaskList(),
@@ -172,11 +172,10 @@
 
 
 /***************************************************************************************************************/
-/*                                低功耗相关配置--不甘心的咸鱼编辑                                              */
-/*								  嵌入式交流场地--443040359_qq													*/
+/*                                低功耗相关配置                                            */
 /***************************************************************************************************************/
 #if configUSE_TICKLESS_IDLE 
-	//#include "micro_wave_oven.h"
+
 	#define configPRE_SLEEP_PROCESSING(x)   PRE_SLEEP_PROCESSING(x)  /* 进入低功耗前准备函数 */
 	#define configPOST_SLEEP_PROCESSING(x)  POST_SLEEP_PROCESSING(x) /* 退出低功耗前准备函数 */
 #endif
@@ -187,11 +186,11 @@
 #ifdef __NVIC_PRIO_BITS
 	#define configPRIO_BITS       		__NVIC_PRIO_BITS
 #else
-	#define configPRIO_BITS     /*用于设置MCU使用几位优先级,由于FREERTOS不支持亚优先级的管理，因此需要将其设置为4--不甘心的咸鱼注*/             
+	#define configPRIO_BITS     /*用于设置MCU使用几位优先级,由于FREERTOS不支持亚优先级的管理，因此需要将其设置为4--*/             
 #endif
 
 #define configLIBRARY_LOWEST_INTERRUPT_PRIORITY			15                      //中断最低优先级
-#define configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY	3                       //系统可管理的最高中断优先级，高于此优先级的中断，freertos不能屏蔽，也不能调用api--不甘心的咸鱼注
+#define configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY	3                       //系统可管理的最高中断优先级，高于此优先级的中断，freertos不能屏蔽，也不能调用api
 #define configKERNEL_INTERRUPT_PRIORITY 		( configLIBRARY_LOWEST_INTERRUPT_PRIORITY << (8 - configPRIO_BITS) )
 #define configMAX_SYSCALL_INTERRUPT_PRIORITY 	( configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY << (8 - configPRIO_BITS) )
 

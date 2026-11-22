@@ -66,7 +66,7 @@
 
     1 tab == 4 spaces!
 */
-#include <string.h>		/*防止memset函数报错，加上该头文件--不甘心的咸鱼注*/
+#include <string.h>		/*防止memset函数报错，加上该头文件*/
 #ifndef INC_FREERTOS_H
 #define INC_FREERTOS_H
 

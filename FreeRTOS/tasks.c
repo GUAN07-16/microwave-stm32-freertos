@@ -2124,8 +2124,7 @@ BaseType_t xAlreadyYielded = pdFALSE;
 }
 /*-----------------------------------------------------------*/
 
-/*FreeRTOS时钟节拍统计函数，当每个时钟节拍发生，XTickCount值加一，也就是每1 ms加1
-----不甘心的咸鱼注*/
+/*FreeRTOS时钟节拍统计函数，当每个时钟节拍发生，XTickCount值加一，也就是每1 ms加1*/
 TickType_t xTaskGetTickCount( void )
 {
 TickType_t xTicks;
@@ -2519,7 +2518,7 @@ BaseType_t xSwitchRequired = pdFALSE;
 		xTickCount = xConstTickCount;
 
 		if( xConstTickCount == ( TickType_t ) 0U )/*发生溢出，因为此变量是32位无符号整数，最大值为0xFFFFFFFF，
-		当达到最大值时，再增加1就会溢出为0--不甘心的咸鱼注*/
+		当达到最大值时，再增加1就会溢出为0*/
 		{
 			taskSWITCH_DELAYED_LISTS();
 		}
@@ -3194,7 +3193,7 @@ static portTASK_FUNCTION( prvIdleTask, pvParameters )
 		to 1.  This is to ensure portSUPPRESS_TICKS_AND_SLEEP() is called when
 		user defined low power mode	implementations require
 		configUSE_TICKLESS_IDLE to be set to a value other than 1. */
-		#if ( configUSE_TICKLESS_IDLE != 0 )/*开启低功耗模式后执行下列代码块--不甘心的咸鱼*/
+		#if ( configUSE_TICKLESS_IDLE != 0 )/*开启低功耗模式后执行下列代码块*/
 		{
 		TickType_t xExpectedIdleTime;
 
